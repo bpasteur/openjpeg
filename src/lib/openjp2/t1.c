@@ -1312,6 +1312,11 @@ OPJ_BOOL opj_t1_decode_cblks(  opj_tcd_tilecomp_t* tilec,
 	OPJ_UINT32 resno, bandno, precno;
 	OPJ_UINT32 tile_w = (OPJ_UINT32)(tilec->x1 - tilec->x0);
 	OPJ_BOOL rc = OPJ_TRUE;
+
+#ifdef _OPENMP
+	omp_set_num_threads(get_num_threads());
+#endif
+
 	for (resno = 0; resno < tilec->minimum_num_resolutions; ++resno) {
 		opj_tcd_resolution_t* res = &tilec->resolutions[resno];
 
@@ -1516,6 +1521,10 @@ OPJ_BOOL opj_t1_encode_cblks(   opj_tcd_tile_t *tile,
 	OPJ_UINT32 compno, resno, bandno, precno;
 	OPJ_BOOL rc = OPJ_TRUE;
 	tile->distotile = 0;		/* fixed_quality */
+
+#ifdef _OPENMP
+	omp_set_num_threads(get_num_threads());
+#endif
 
 	for (compno = 0; compno < tile->numcomps; ++compno) {
 		opj_tcd_tilecomp_t* tilec = tile->comps + compno;

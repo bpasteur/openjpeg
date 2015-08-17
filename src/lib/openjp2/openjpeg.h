@@ -498,6 +498,17 @@ typedef struct opj_cparameters {
     /** RSIZ value
         To be used to combine OPJ_PROFILE_*, OPJ_EXTENSION_* and (sub)levels values. */
     OPJ_UINT16 rsiz;
+
+    OPJ_BOOL quiet_flag;
+    /**
+     * disable the warning pop-ups
+     **/
+
+    OPJ_UINT32 num_threads;
+    /**
+     * number of processors to use with openMP
+     **/
+
 } opj_cparameters_t;  
 
 #define OPJ_DPARAMETERS_IGNORE_PCLR_CMAP_CDEF_FLAG	0x0001
@@ -564,6 +575,11 @@ typedef struct opj_dparameters {
 /* <<UniPG */
 
 	unsigned int flags;
+
+    OPJ_UINT32 num_procs;
+    /**
+     * number of processors to use with openMP
+     **/
 
 } opj_dparameters_t;
 
@@ -1054,8 +1070,17 @@ extern "C" {
 /* Get the version of the openjpeg library*/
 OPJ_API const char * OPJ_CALLCONV opj_version(void);
 
-/* Initialize OpenJPEG library */
-OPJ_API OPJ_BOOL OPJ_CALLCONV opj_initialize();
+/*
+==========================================================
+   openMP 
+==========================================================
+*/
+
+OPJ_API void OPJ_CALLCONV set_num_threads(OPJ_UINT32 threads);
+
+OPJ_API OPJ_UINT32 OPJ_CALLCONV get_num_threads(void);
+
+OPJ_API OPJ_UINT32 OPJ_CALLCONV get_num_procs(void);
 
 /* 
 ==========================================================

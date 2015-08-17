@@ -1600,6 +1600,8 @@ static OPJ_BOOL opj_tcd_dwt_decode ( opj_tcd_t *p_tcd )
 		OPJ_INT64 compno;
 		OPJ_BOOL rc = OPJ_TRUE;
 #ifdef _OPENMP
+        int num_threads = get_num_threads();
+		omp_set_num_threads(num_threads < 3 ? num_threads : 3);
 		 #pragma omp parallel default(none) private(compno) shared(p_tcd, l_tile, rc)
 		 {
 		#pragma omp for
@@ -1983,8 +1985,10 @@ OPJ_BOOL opj_tcd_dwt_encode ( opj_tcd_t *p_tcd )
         OPJ_INT64 compno;
 		OPJ_BOOL rc = OPJ_TRUE;
 #ifdef _OPENMP
-		 #pragma omp parallel default(none) private(compno) shared(p_tcd, l_tile, rc)
-		 {
+		int num_threads = get_num_threads();
+		omp_set_num_threads(num_threads < 3 ? num_threads : 3);
+		#pragma omp parallel default(none) private(compno) shared(p_tcd, l_tile, rc)
+		{
 		#pragma omp for
 #endif
         for (compno = 0; compno < (OPJ_INT64)l_tile->numcomps; ++compno) {

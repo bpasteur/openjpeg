@@ -421,6 +421,7 @@ opj_image_t* tiftoimage(const char *filename, opj_cparameters_t *parameters)
 	OPJ_INT32* buffer32s = NULL;
 	OPJ_INT32* planes[4];
 	OPJ_SIZE_T rowStride;
+    unsigned long tileWidth = 0;
 	
 	tif = TIFFOpen(filename, "r");
 	
@@ -439,6 +440,15 @@ opj_image_t* tiftoimage(const char *filename, opj_cparameters_t *parameters)
 	TIFFGetField(tif, TIFFTAG_SAMPLESPERPIXEL, &tiSpp);
 	TIFFGetField(tif, TIFFTAG_PHOTOMETRIC, &tiPhoto);
 	TIFFGetField(tif, TIFFTAG_PLANARCONFIG, &tiPC);
+    TIFFGetField(tif, TIFFTAG_TILEWIDTH, &tileWidth);
+
+    if(tileWidth > 0) {
+		fprintf(stderr,"tiftoimage: tileWidth=%d, Only stripped images has been implemented\n",tileWidth);
+		fprintf(stderr,"\tAborting\n");
+		TIFFClose(tif);
+		return NULL;
+	}
+
 	w= (int)tiWidth;
 	h= (int)tiHeight;
 	
